@@ -45,7 +45,7 @@ Error from server (NotFound): error when creating "https://raw.githubusercontent
 
 Наблюдаем ошибку, что не найдены пространства имен (`namespace`)
 
-3. Создал пространства имен (`namespace`)
+2. Создал пространства имен (`namespace`)
 
 ```bash
 vk@vkvm:~/14_4$ kubectl create namespace web
@@ -54,7 +54,7 @@ vk@vkvm:~/14_4$ kubectl create namespace data
 namespace/data created
 ```
 
-4. Снова применил манифест
+3. Снова применил манифест
 
 ```bash
 vk@vkvm:~/14_4$ kubectl apply -f https://raw.githubusercontent.com/netology-code/kuber-homeworks/main/3.5/files/task.yaml
@@ -65,7 +65,7 @@ service/auth-db created
 
 **Ошибок нет, развёртывание успешно**
 
-5. Проверил созданные артефакты в пространствах имён `web`, `data`
+4. Проверил созданные артефакты в пространствах имён `web`, `data`
 
 ```bash
 vk@vkvm:~/14_4$ kubectl get all -n web -o wide
@@ -92,7 +92,7 @@ NAME                                 DESIRED   CURRENT   READY   AGE   CONTAINER
 replicaset.apps/auth-db-795c96cddc   1         1         1       77s   nginx        nginx:1.19.1   app=auth-db,pod-template-hash=795c96cddc
 ```
 
-6. Проверил логи подов в развёртывании `web-consumer`
+5. Проверил логи подов в развёртывании `web-consumer`
 
 ```bash
 vk@vkvm:~/14_4$ kubectl logs deployment/web-consumer -n web
@@ -105,7 +105,7 @@ curl: (6) Couldn't resolve host 'auth-db'
 
 Увидел, что у подов в развертывании `web-consumer` ошибка разрешения  имени `auth-db`
 
-7. Проверил в `kubectl` разрешение имени `auth-db`
+6. Проверил в `kubectl` разрешение имени `auth-db`
 
 ```bash
 vk@vkvm:~/14_4$ kubectl -n web exec web-consumer-577d47b97d-88pl6 -- curl auth-db
@@ -134,14 +134,14 @@ Accept-Ranges: bytes
 Убедился, что разрешение по полному имени работает.
 Полное имя включает в себя пространство имён `data` для пода `auth-db`.
 
-8. Отредактировал манифест для пода развёртывания `web-consumer`, добавил полное имя до пода `auth-db`. После сохранения поды должны пересоздаться.
+7. Отредактировал манифест для пода развёртывания `web-consumer`, добавил полное имя до пода `auth-db`. После сохранения поды должны пересоздаться.
 
 ```bash
 vk@vkvm:~/14_4$ kubectl edit -n web deployments/web-consumer
 deployment.apps/web-consumer edited
 ```
 
-9. Проверил логи
+8. Проверил логи
 
 ```bash
 kubectl logs deployment/web-consumer -n web
